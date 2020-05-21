@@ -3,11 +3,16 @@
 
 
 import os
-
+import subprocess
 
 CWD = os.getcwd()
 HOME = os.path.expanduser('~')
 
+#-------------------------------------------------------------------------
+# Running without containers
+# Need to use python2.7 for pickle files used in CASA scripts
+casadir=os.path.split(subprocess.check_output("which casa", shell = True).decode("utf-8").strip())[0]
+CASA_PYTHON_PATH = casadir+os.path.sep+"python"
 
 # ------------------------------------------------------------------------
 #
@@ -18,7 +23,7 @@ HOME = os.path.expanduser('~')
 IDIA_CONTAINER_PATH = HOME+'/containers/'
 CHPC_CONTAINER_PATH = HOME+'/lustre/containers'
 NODE_CONTAINER_PATH = HOME+'/containers/'
-
+HIPPO_CONTAINER_PATH = '/data/mjh/containers/'
 
 CASA_PATTERN = 'casa'
 CLUSTERCAT_PATTERN = 'ddfacet-0.4.1'
@@ -68,29 +73,29 @@ BEAM_L = HOME+'/Beams/meerkat_pb_jones_cube_95channels_$(xy)_$(reim).fits'
 
 SLURM_DEFAULTS = {
 	'TIME': '12:00:00',
-	'PARTITION': 'Main',
+	'PARTITION': 'debug',
 	'NTASKS': '1',
 	'NODES': '1',
 	'CPUS': '8',
-	'MEM': '64GB'
+	'MEM': '64000'
 }
 
 SLURM_TRICOLOUR = {
     'TIME': '06:00:00',
-    'PARTITION': 'Main',
+    'PARTITION': 'debug',
     'NTASKS': '1',
     'NODES': '1',
-    'CPUS': '32',
-    'MEM': '230GB'
+    'CPUS': '20',
+    'MEM': '64000'
 }
 
 SLURM_WSCLEAN = {
     'TIME': '12:00:00',
-    'PARTITION': 'Main',
+    'PARTITION': 'debug',
     'NTASKS': '1',
     'NODES': '1',
-    'CPUS': '32',
-    'MEM': '230GB'
+    'CPUS': '20',
+    'MEM': '64000'
 }
 
 

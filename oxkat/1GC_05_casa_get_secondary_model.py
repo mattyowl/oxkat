@@ -5,6 +5,8 @@ import glob
 import pickle
 import shutil
 import time
+sys.path.append('oxkat')
+from pickle_handler import get_project_info, load_pickle
 
 
 execfile('oxkat/config.py')
@@ -34,7 +36,9 @@ def getfieldid(myms,field):
 myuvrange = '>150m'
 
 
-project_info = pickle.load(open('project_info.p','rb'))
+#project_info = pickle.load(open('project_info.p','rb'))
+project_info = get_project_info()
+
 #myms = project_info['master_ms']
 myms = glob.glob('*calibrators.ms')[0]
 bpcal = project_info['primary'][0] # Using field names because targets will be removed

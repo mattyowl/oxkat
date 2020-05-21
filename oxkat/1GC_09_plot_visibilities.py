@@ -7,7 +7,8 @@ import pickle
 import subprocess
 import sys
 sys.path.append(o.abspath(o.join(o.dirname(sys.modules[__name__].__file__), "..")))
-
+sys.path.append('oxkat')
+from pickle_handler import get_project_info
 
 from oxkat import generate_jobs as gen
 from oxkat import config as cfg
@@ -20,7 +21,7 @@ def main():
     gen.setup_dir(VISPLOTS)
 
 
-    project_info = pickle.load(open('project_info.p','rb'), encoding = 'latin1')
+    project_info = get_project_info()
     myms = project_info['master_ms']
     bpcal = project_info['primary'][1]
     pcals = project_info['secondary']

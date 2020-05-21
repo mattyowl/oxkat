@@ -192,7 +192,7 @@ def main():
     project_info['nchan'] = nchan
 
 
-    pickle.dump(project_info,open(outpick,'wb'))
+    pickle.dump(project_info,open(outpick,'wb'), protocol = 2)
     
 
     print(project_info)

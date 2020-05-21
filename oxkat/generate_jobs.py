@@ -55,7 +55,9 @@ def set_infrastructure(args):
     elif args[1].lower() == 'node':
         infrastructure = 'node'
         CONTAINER_PATH = cfg.NODE_CONTAINER_PATH
-
+    elif args[1].lower() == 'hippo':
+        infrastructure = 'hippo'
+        CONTAINER_PATH = cfg.HIPPO_CONTAINER_PATH
     return infrastructure,CONTAINER_PATH
 
 
@@ -135,7 +137,7 @@ def job_handler(syscall,
                 # pbs_ppn=cfg.PBS_PPN,
                 # pbs_mem=cfg.PBS_MEM):
 
-    if infrastructure == 'idia':
+    if infrastructure == 'idia' or infrastructure == 'hippo':
 
         slurm_time = slurm_config['TIME']
         slurm_partition = slurm_config['PARTITION']
@@ -164,6 +166,7 @@ def job_handler(syscall,
             '#SBATCH --mem='+slurm_mem+'\n',
             '#SBATCH --output='+slurm_logfile+'\n',
             'SECONDS=0\n',
+            'source /home/mjh/SETUP_CONDA.sh\n',
             syscall+'\n',
             'echo "****ELAPSED "$SECONDS" '+jobname+'"\n',
             'sleep 10\n'])

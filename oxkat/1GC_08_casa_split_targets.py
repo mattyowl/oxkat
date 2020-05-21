@@ -2,10 +2,11 @@
 
 
 import pickle
+sys.path.append('oxkat')
+from pickle_handler import get_project_info
 
-
-project_info = pickle.load(open('project_info.p','rb'))
-
+#project_info = pickle.load(open('project_info.p','rb'))
+project_info = get_project_info()
 
 myms = project_info['master_ms']
 targets = project_info['target_list'] 

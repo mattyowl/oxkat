@@ -1,9 +1,12 @@
 # ian.heywood@physics.ox.ac.uk
 
 import pickle
+sys.path.append('oxkat')
+from pickle_handler import get_project_info
 
+#project_info = pickle.load(open('project_info.p','rb'))
+project_info = get_project_info()
 
-project_info = pickle.load(open('project_info.p','rb'))
 myms = project_info['master_ms']
 bpcal = project_info['primary'][1]
 pcals = project_info['secondary']

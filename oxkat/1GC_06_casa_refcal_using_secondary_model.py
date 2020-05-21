@@ -5,7 +5,8 @@ import glob
 import pickle
 import shutil
 import time
-
+sys.path.append('oxkat')
+from pickle_handler import get_project_info, load_pickle
 
 execfile('oxkat/config.py')
 
@@ -23,7 +24,8 @@ delaycut = 2.5 # don't solve for delays on secondaries weaker than this
 gapfill = 24
 
 
-project_info = pickle.load(open('project_info.p','rb'))
+#project_info = pickle.load(open('project_info.p','rb'))
+project_info = get_project_info()
 myms = project_info['master_ms']
 bpcal = project_info['primary'][1]
 pcals = project_info['secondary']
@@ -58,7 +60,7 @@ gtab3 = GAINTABLES+'/cal_'+myms+'_'+tt+'.G3'
 ftab3 = GAINTABLES+'/cal_'+myms+'_'+tt+'.flux3'
 
 
-secondary_pickle = pickle.load(open(glob.glob(GAINTABLES+'/secondary_models_final*.p')[0],'rb'))
+secondary_pickle = load_pickle(glob.glob(GAINTABLES+'/secondary_models_final*.p')[0])
 secondary_models = secondary_pickle[0]
 secondary_mapping = secondary_pickle[1]
 
