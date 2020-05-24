@@ -96,8 +96,7 @@ def main():
 
     #syscall = 'singularity exec '+RAGAVI_CONTAINER+' '
     syscall = ''
-    casapython = cfg.CASA_PYTHON_PATH
-    syscall += casapython+' '+OXKAT+'/1GC_00_setup.py '+myms
+    syscall += 'python '+OXKAT+'/1GC_00_setup.py '+myms
 
     run_command = gen.job_handler(syscall=syscall,
                 jobname=id_setup,

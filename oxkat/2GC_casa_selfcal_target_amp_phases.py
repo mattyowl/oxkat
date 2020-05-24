@@ -4,7 +4,8 @@
 import pickle
 import sys
 import time
-
+sys.path.append('oxkat')
+from pickle_handler import get_project_info
 
 execfile('oxkat/config.py')
 
@@ -26,7 +27,7 @@ if myuvrange == '':
     myuvrange = '>150m'
 
 
-project_info = pickle.load(open('project_info.p','rb'))
+project_info = get_project_info()
 ref_ant = project_info['ref_ant']
 
 

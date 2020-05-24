@@ -8,12 +8,6 @@ import subprocess
 CWD = os.getcwd()
 HOME = os.path.expanduser('~')
 
-#-------------------------------------------------------------------------
-# Running without containers
-# Need to use python2.7 for pickle files used in CASA scripts
-casadir=os.path.split(subprocess.check_output("which casa", shell = True).decode("utf-8").strip())[0]
-CASA_PYTHON_PATH = casadir+os.path.sep+"python"
-
 # ------------------------------------------------------------------------
 #
 # Singularity containers

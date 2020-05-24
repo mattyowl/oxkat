@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+"""
+
+Sets up for a run of oxkat pipeline
+
+"""
+
+import os
+import sys
+
+# This will get tidied up if we make a proper python package
+OXKAT_DIR="/data/mjh/Github/oxkat"
+
+if len(sys.argv) < 2:
+    print("Run: % setup_oxkat <path to measurement set (.ms)>")
+    print("Note: oxkat will not touch your original measurement set")
+else:
+    msname=sys.argv[1]
+    
+    os.system("ln -s %s" % (os.path.abspath(msname)))
+
+    oxdirs=['setups', 'parsets', 'tools', 'oxkat']
+    for oxdir in oxdirs:
+        os.system("ln -s %s" % (OXKAT_DIR+os.path.sep+oxdir))
+
