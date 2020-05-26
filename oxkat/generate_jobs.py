@@ -80,9 +80,9 @@ def timenow():
 def get_code(myms):
 
     # Last three digits of the data set ID
-
-    myms = myms.split('/')[-1]
-    code = myms.split('_')[0][-3:]
+    
+    myms = os.path.split(myms)[-1]
+    code = myms.split(".ms")[0][-3:]
     code = code.replace('-','_')
     return code
 
