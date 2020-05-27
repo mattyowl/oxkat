@@ -47,8 +47,7 @@ def get_field_info(myms,
     state_tab = table(myms+'/STATE',ack=False)
     modes = state_tab.getcol('OBS_MODE')
     state_tab.close()
-
-
+    
     for i in range(0,len(modes)):
         if modes[i] == target:
             target_state = i
@@ -60,7 +59,11 @@ def get_field_info(myms,
             unknown_state = i
 
     print('')
-    print('Target state:',target_state)
+    try:
+        print('Target state:',target_state)
+    except:
+        print('WARNING: No target state found in measurement set')
+        target_state=-99
     print('Primary state:',primary_state)
     print('Secondary state:',secondary_state)
     print('Unknown state:',unknown_state)
@@ -93,15 +96,14 @@ def get_field_info(myms,
         primary_dir = primary_candidate[2]
         for cal in cals:
             sep = calcsep(primary_dir[0],primary_dir[1],cal[1],cal[2])
-            if sep < 1e-4: # and project_info['primary_name'] == 'UNKNOWN':
+            if sep < 1e-3: # and project_info['primary_name'] == 'UNKNOWN':
                 primary_field = (primary_candidate[0],primary_candidate[1])
                 primary_tag = cal[0]
-
 
     for i in range(0,len(names)):
         sub_tab = main_tab.query(query='FIELD_ID=='+str(i))
         state = numpy.unique(sub_tab.getcol('STATE_ID'))
-        if state == target_state:
+        if state == target_state or state == unknown_state:
             target_ms = myms.replace('.ms','_'+names[i].replace('+','p').replace(' ','_')+'.ms')
             target_dir =  dirs[i][0,:]*180.0/numpy.pi
             seps = []
