@@ -41,8 +41,8 @@ def get_field_info(myms,
 
     # Tags and positions for the preferred primary calibrators
     cals = [('1934',294.85427795833334,-63.71267375),
-        ('0408',62.084911833333344,-65.75252238888889)]
-
+            ('0408',62.084911833333344,-65.75252238888889),
+            ('1331', 202.78454167,  30.50916667)]
 
     state_tab = table(myms+'/STATE',ack=False)
     modes = state_tab.getcol('OBS_MODE')
