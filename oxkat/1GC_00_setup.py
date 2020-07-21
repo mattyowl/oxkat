@@ -130,12 +130,6 @@ def get_fields(myms):
     from the FIELD table of myms
     """
 
-<<<<<<< HEAD
-    # Tags and positions for the preferred primary calibrators
-    cals = [('1934',294.85427795833334,-63.71267375),
-            ('0408',62.084911833333344,-65.75252238888889),
-            ('1331', 202.78454167,  30.50916667)]
-=======
     field_tab = table(myms+'/FIELD',ack=False)
     field_dirs = field_tab.getcol('REFERENCE_DIR')*180.0/numpy.pi
     field_names = field_tab.getcol('NAME')
@@ -153,16 +147,11 @@ def get_states(myms,
     intents and the corresponding integer STATE_IDs are extracted from the STATE
     table, along with any UNKNOWN states.
     """
->>>>>>> master
 
     state_tab = table(myms+'/STATE',ack=False)
     modes = state_tab.getcol('OBS_MODE')
     state_tab.close()
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> master
     for i in range(0,len(modes)):
         if modes[i] == target_intent:
             target_state = i
@@ -173,21 +162,7 @@ def get_states(myms,
         if modes[i] == 'UNKNOWN':
             unknown_state = i
 
-<<<<<<< HEAD
-    print('')
-    try:
-        print('Target state:',target_state)
-    except:
-        print('WARNING: No target state found in measurement set')
-        target_state=-99
-    print('Primary state:',primary_state)
-    print('Secondary state:',secondary_state)
-    print('Unknown state:',unknown_state)
-    print('')
-=======
     return primary_state, secondary_state, target_state, unknown_state
->>>>>>> master
-
 
 def get_primary_candidates(myms,
                 primary_state,
@@ -209,37 +184,6 @@ def get_primary_candidates(myms,
         field_id = field_ids[i]
         sub_tab = main_tab.query(query='FIELD_ID=='+str(field_id))
         state = numpy.unique(sub_tab.getcol('STATE_ID'))
-<<<<<<< HEAD
-        if primary_state in state or unknown_state in state:
-            primary_dir = dirs[i][0,:]*180.0/numpy.pi
-            primary_candidates.append((names[i],str(i),primary_dir))
-        if secondary_state in state:
-            secondary_dir = dirs[i][0,:]*180.0/numpy.pi
-            secondary_fields.append((names[i],str(i),secondary_dir))
-
-   
-    for primary_candidate in primary_candidates:
-        primary_dir = primary_candidate[2]
-        for cal in cals:
-            sep = calcsep(primary_dir[0],primary_dir[1],cal[1],cal[2])
-            if sep < 1e-3: # and project_info['primary_name'] == 'UNKNOWN':
-                primary_field = (primary_candidate[0],primary_candidate[1])
-                primary_tag = cal[0]
-
-    for i in range(0,len(names)):
-        sub_tab = main_tab.query(query='FIELD_ID=='+str(i))
-        state = numpy.unique(sub_tab.getcol('STATE_ID'))
-        if target_state in state or unknown_state in state:
-            target_ms = myms.replace('.ms','_'+names[i].replace('+','p').replace(' ','_')+'.ms')
-            target_dir =  dirs[i][0,:]*180.0/numpy.pi
-            seps = []
-            for secondary_field in secondary_fields:
-                secondary_dir = secondary_field[2]
-                sep = calcsep(target_dir[0],target_dir[1],secondary_dir[0],secondary_dir[1])
-                seps.append(sep)
-            seps = numpy.array(seps)
-            secondary_idx = numpy.where(seps==numpy.min(seps))[0][0]
-=======
         if state == primary_state or state == unknown_state:
             candidate_dirs.append(field_dir)
             candidate_names.append(field_name)
@@ -304,7 +248,6 @@ def get_targets(myms,
             target_ids.append(field_id)
         sub_tab.close()
     main_tab.close()
->>>>>>> master
 
     return target_dirs, target_names, target_ids
 
@@ -418,9 +361,6 @@ def main():
     nchan = get_nchan(myms)
 
 
-<<<<<<< HEAD
-    pickle.dump(project_info,open(outpick,'wb'), protocol = 2)
-=======
     # ------------------------------------------------------------------------------
     #
     # STATE IDs
@@ -549,7 +489,6 @@ def main():
         sep = str(sep)+' deg'
 
         myprint('%-24s %-24s %-9s' % (targ, pcal, sep))
->>>>>>> master
     
     myprint('')
 

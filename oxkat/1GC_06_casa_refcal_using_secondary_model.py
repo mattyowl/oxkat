@@ -25,8 +25,6 @@ myuvrange = CAL_1GC_UVRANGE
 delaycut = CAL_1GC_DELAYCUT
 gapfill = CAL_1GC_FILLGAPS
 
-<<<<<<< HEAD
-#project_info = pickle.load(open('project_info.p','rb'))
 project_info = get_project_info()
 myms = project_info['master_ms']
 bpcal = project_info['primary'][1]
@@ -34,8 +32,6 @@ pcals = project_info['secondary']
 targets = project_info['target_list'] 
 primary_tag = project_info['primary_tag']
 ref_ant = project_info['ref_ant']
-=======
->>>>>>> master
 
 
 # ------- Setup names

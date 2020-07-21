@@ -37,12 +37,8 @@ if psolint == '':
 if apsolint == '':
     apsolint = CAL_2GC_APSOLINT
 
-<<<<<<< HEAD
 project_info = get_project_info()
 ref_ant = project_info['ref_ant']
-=======
->>>>>>> master
-
 
 for myms in mslist:
 

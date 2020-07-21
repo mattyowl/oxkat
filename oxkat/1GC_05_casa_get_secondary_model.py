@@ -39,13 +39,8 @@ def getfieldid(myms,field):
 myuvrange = CAL_1GC_UVRANGE
 gapfill = CAL_1GC_FILLGAPS
 
-<<<<<<< HEAD
-#project_info = pickle.load(open('project_info.p','rb'))
 project_info = get_project_info()
 
-#myms = project_info['master_ms']
-=======
->>>>>>> master
 myms = glob.glob('*calibrators.ms')[0]
 
 
