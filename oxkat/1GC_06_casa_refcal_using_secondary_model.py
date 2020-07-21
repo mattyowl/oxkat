@@ -8,7 +8,9 @@ import time
 sys.path.append('oxkat')
 from pickle_handler import get_project_info, load_pickle
 
+execfile('oxkat/casa_read_project_info.py')
 execfile('oxkat/config.py')
+
 
 
 def stamp():
@@ -19,11 +21,11 @@ def stamp():
 # ------- Parameters
 
 
-myuvrange = '>150m'
-delaycut = 2.5 # don't solve for delays on secondaries weaker than this
-gapfill = 24
+myuvrange = CAL_1GC_UVRANGE
+delaycut = CAL_1GC_DELAYCUT
+gapfill = CAL_1GC_FILLGAPS
 
-
+<<<<<<< HEAD
 #project_info = pickle.load(open('project_info.p','rb'))
 project_info = get_project_info()
 myms = project_info['master_ms']
@@ -32,6 +34,8 @@ pcals = project_info['secondary']
 targets = project_info['target_list'] 
 primary_tag = project_info['primary_tag']
 ref_ant = project_info['ref_ant']
+=======
+>>>>>>> master
 
 
 # ------- Setup names
@@ -40,24 +44,24 @@ ref_ant = project_info['ref_ant']
 tt = stamp()
 
 
-ktab0 = GAINTABLES+'/cal_'+myms+'_'+tt+'.K0'
-bptab0 = GAINTABLES+'/cal_'+myms+'_'+tt+'.B0'
-gtab0 = GAINTABLES+'/cal_'+myms+'_'+tt+'.G0'
+ktab0 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.K0'
+bptab0 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.B0'
+gtab0 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.G0'
 
 
-ktab1 = GAINTABLES+'/cal_'+myms+'_'+tt+'.K1'
-bptab1 = GAINTABLES+'/cal_'+myms+'_'+tt+'.B1'
-gtab1 = GAINTABLES+'/cal_'+myms+'_'+tt+'.G1'
+ktab1 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.K1'
+bptab1 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.B1'
+gtab1 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.G1'
 
 
-ktab2 = GAINTABLES+'/cal_'+myms+'_'+tt+'.K2'
-gtab2 = GAINTABLES+'/cal_'+myms+'_'+tt+'.G2'
-ftab2 = GAINTABLES+'/cal_'+myms+'_'+tt+'.flux2'
+ktab2 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.K2'
+gtab2 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.G2'
+ftab2 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.flux2'
 
 
-ktab3 = GAINTABLES+'/cal_'+myms+'_'+tt+'.K3'
-gtab3 = GAINTABLES+'/cal_'+myms+'_'+tt+'.G3'
-ftab3 = GAINTABLES+'/cal_'+myms+'_'+tt+'.flux3'
+ktab3 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.K3'
+gtab3 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.G3'
+ftab3 = GAINTABLES+'/cal_1GC_'+myms+'_'+tt+'.flux3'
 
 if not onecalsrc:
     secondary_pickle = load_pickle(glob.glob(GAINTABLES+'/secondary_models_final*.p')[0])
@@ -304,6 +308,11 @@ if not onecalsrc:
 
     for i in range(0,len(pcals)):
 
+<<<<<<< HEAD
+=======
+    pcal = pcals[i]
+    pcal_name = pcal_names[i] # name
+>>>>>>> master
 
         pcal = pcals[i][1] 
         pcal_name = pcals[i][0] # name
@@ -383,7 +392,11 @@ if not onecalsrc:
             solve_delays.append(False)
 
 
+<<<<<<< HEAD
     # ------- Looping over secondaries
+=======
+    pcal = pcals[i]
+>>>>>>> master
 
 
     for i in range(0,len(pcals)):
@@ -461,6 +474,10 @@ if not onecalsrc:
 
         pcal = pcals[i][1]
 
+<<<<<<< HEAD
+=======
+    pcal = pcals[i]
+>>>>>>> master
 
         # --- G3 (secondary)
 
@@ -511,7 +528,11 @@ if not onecalsrc:
     for i in range(0,len(pcals)):
 
 
+<<<<<<< HEAD
         pcal = pcals[i][1]
+=======
+    pcal = pcals[i]
+>>>>>>> master
 
 
         # --- Correct secondaries with K3, G1, B1, G3
@@ -529,13 +550,19 @@ if not onecalsrc:
 
 # ------- Apply final tables to targets
 
+<<<<<<< HEAD
 if onecalsrc:
     ktab3 = ktab1
     
 for targ in targets:
+=======
 
-    target = targ[1]
-    related_pcal = pcals[targ[3]][1]
+for i in range(0,len(targets)):
+
+>>>>>>> master
+
+    target = targets[i]
+    related_pcal = target_cal_map[i]
 
 
     # --- Correct targets with K3, G1, B1, G3

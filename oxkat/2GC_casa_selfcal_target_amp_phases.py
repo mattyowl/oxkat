@@ -1,19 +1,22 @@
 # ian.heywood@physics.ox.ac.uk
 
 
-import pickle
 import sys
 import time
 sys.path.append('oxkat')
 from pickle_handler import get_project_info
 
 execfile('oxkat/config.py')
+execfile('oxkat/casa_read_project_info.py')
+
 
 
 def stamp():
     return str(time.time()).replace('.','')
 
 myuvrange = ''
+psolint = ''
+apsolint = ''
 
 args = sys.argv
 for item in sys.argv:
@@ -22,13 +25,23 @@ for item in sys.argv:
         mslist = parts[1].split(',')
     if parts[0] == 'uvmin':
         myuvrange = '>'+parts[1]
+    if parts[0] == 'psolint':
+        psolint = parts[1]
+    if parts[0] == 'apsolint':
+        apsolint = parts[1]
 
 if myuvrange == '':
-    myuvrange = '>150m'
+    myuvrange = CAL_2GC_UVRANGE
+if psolint == '':
+    psolint = CAL_2GC_PSOLINT
+if apsolint == '':
+    apsolint = CAL_2GC_APSOLINT
 
-
+<<<<<<< HEAD
 project_info = get_project_info()
 ref_ant = project_info['ref_ant']
+=======
+>>>>>>> master
 
 
 for myms in mslist:
@@ -37,8 +50,8 @@ for myms in mslist:
     clearstat()
 
 
-    gptab = GAINTABLES+'/cal_'+myms+'_'+stamp()+'.GP0'
-    gatab = GAINTABLES+'/cal_'+myms+'_'+stamp()+'.GA0'
+    gptab = GAINTABLES+'/cal_2GC_'+myms+'_'+stamp()+'.GP0'
+    gatab = GAINTABLES+'/cal_2GC_'+myms+'_'+stamp()+'.GA0'
 
 
     gaincal(vis=myms,
