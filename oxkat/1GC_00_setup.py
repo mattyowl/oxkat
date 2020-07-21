@@ -84,10 +84,10 @@ def get_field_info(myms,
     for i in range(0,len(names)):
         sub_tab = main_tab.query(query='FIELD_ID=='+str(i))
         state = numpy.unique(sub_tab.getcol('STATE_ID'))
-        if state == primary_state or state == unknown_state:
+        if primary_state in state or unknown_state in state:
             primary_dir = dirs[i][0,:]*180.0/numpy.pi
             primary_candidates.append((names[i],str(i),primary_dir))
-        if state == secondary_state:
+        if secondary_state in state:
             secondary_dir = dirs[i][0,:]*180.0/numpy.pi
             secondary_fields.append((names[i],str(i),secondary_dir))
 
@@ -103,7 +103,7 @@ def get_field_info(myms,
     for i in range(0,len(names)):
         sub_tab = main_tab.query(query='FIELD_ID=='+str(i))
         state = numpy.unique(sub_tab.getcol('STATE_ID'))
-        if state == target_state or state == unknown_state:
+        if target_state in state or unknown_state in state:
             target_ms = myms.replace('.ms','_'+names[i].replace('+','p').replace(' ','_')+'.ms')
             target_dir =  dirs[i][0,:]*180.0/numpy.pi
             seps = []

@@ -71,7 +71,7 @@ SLURM_DEFAULTS = {
 	'NTASKS': '1',
 	'NODES': '1',
 	'CPUS': '8',
-	'MEM': '64000'
+	'MEM': '60000'
 }
 
 SLURM_TRICOLOUR = {

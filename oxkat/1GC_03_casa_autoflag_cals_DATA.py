@@ -27,9 +27,10 @@ flagdata(vis=myms,mode='extend',growtime=90.0,growfreq=90.0,growaround=True,flag
 
 for i in range(0,len(pcals)):
     pcal = pcals[i][1]
-    flagdata(vis=myms,mode='rflag',datacolumn='data',field=pcal)
-    flagdata(vis=myms,mode='tfcrop',datacolumn='data',field=pcal)
-    flagdata(vis=myms,mode='extend',growtime=90.0,growfreq=90.0,growaround=True,flagneartime=True,flagnearfreq=True,field=pcal)
+    if bpcal[1] != pcal: # avoid double flagging of primary
+        flagdata(vis=myms,mode='rflag',datacolumn='data',field=pcal)
+        flagdata(vis=myms,mode='tfcrop',datacolumn='data',field=pcal)
+        flagdata(vis=myms,mode='extend',growtime=90.0,growfreq=90.0,growaround=True,flagneartime=True,flagnearfreq=True,field=pcal)
 
 
 flagmanager(vis=myms,mode='save',versionname='autoflag_cals_data')
