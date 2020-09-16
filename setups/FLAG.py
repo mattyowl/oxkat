@@ -25,12 +25,15 @@ def main():
     # Get paths from config and setup folders
 
     CWD = cfg.CWD
+    BIND = cfg.BIND
     OXKAT = cfg.OXKAT
     PARSETS = cfg.PARSETS
     TOOLS = cfg.TOOLS
     IMAGES = cfg.IMAGES
     LOGS = cfg.LOGS
     SCRIPTS = cfg.SCRIPTS
+
+    BINDPATH = '$PWD,'+CWD+','+BIND
 
     gen.setup_dir(LOGS)
     gen.setup_dir(SCRIPTS)
@@ -66,6 +69,7 @@ def main():
 
     f = open(submit_file,'w')
     f.write('#!/usr/bin/env bash\n')
+    f.write('export SINGULARITY_BINDPATH='+BINDPATH+'\n')
 
     codes = []
     ii = 1
@@ -117,7 +121,7 @@ def main():
 
             syscall = CONTAINER_RUNNER+TRICOLOUR_CONTAINER+' '
             syscall += gen.generate_syscall_tricolour(myms = myms,
-                                    config = PARSETS+'/target_flagging_1_narrow.yaml',
+                                    config = PARSETS+'/tricolour/target_flagging_1_narrow.yaml',
                                     datacol = 'DATA',
                                     fields = '0',
                                     strategy = 'polarisation')
