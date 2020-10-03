@@ -152,6 +152,12 @@ def get_states(myms,
     modes = state_tab.getcol('OBS_MODE')
     state_tab.close()
 
+    # Some MSs don't have target state, instead 'UNKNOWN' happens to be the target
+    # This could be fixed in the script that downsamples to 1024 channels
+    target_state=None
+    primary_state=None
+    secondary_state=None
+    unknown_state=None
     for i in range(0,len(modes)):
         if modes[i] == target_intent:
             target_state = i
@@ -161,7 +167,10 @@ def get_states(myms,
             secondary_state = i
         if modes[i] == 'UNKNOWN':
             unknown_state = i
-
+    
+    if target_state is None and primary_state is not None and secondary_state is not None and unknown_state is not None:
+        target_state=unknown_state
+    
     return primary_state, secondary_state, target_state, unknown_state
 
 
