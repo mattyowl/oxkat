@@ -11,19 +11,24 @@ HOME = os.path.expanduser('~')
 
 # ------------------------------------------------------------------------
 #
-# Singularity containers
+# Singularity
 #
 
 
-#IDIA_CONTAINER_PATH = HOME+'/containers/'
+# $PWD and CWD will be added to $SINGULARITY_BINDPATH by default.
+# If your data are symlinked and located in a path that singularity
+# cannot see by default then set BIND to that path.
+# If you wish to bind multiple paths then use a comma-separated list.
+BIND = ''
+
+
 IDIA_CONTAINER_PATH = '/idia/software/containers/STIMELA_IMAGES/'
-#CHPC_CONTAINER_PATH = HOME+'/lustre/containers'
 CHPC_CONTAINER_PATH = '/apps/chpc/astro/stimela_images/'
 HIPPO_CONTAINER_PATH = None
 NODE_CONTAINER_PATH = HOME+'/containers/'
 
 
-CASA_PATTERN = 'casa_'
+CASA_PATTERN = 'casa*1.2.6'
 CLUSTERCAT_PATTERN = 'ddfacet'
 CODEX_PATTERN = 'codex-africanus'
 CUBICAL_PATTERN = 'cubical'
@@ -191,6 +196,17 @@ CAL_2GC_APSOLINT = 'inf'             # Solution interval for amplitude and phase
 
 # ------------------------------------------------------------------------
 #
+# 3GC peeling defaults
+#
+
+CAL_3GC_PEEL_NCHAN = 32
+CAL_3GC_PEEL_DIR1COLNAME = 'DIR1_DATA'
+CAL_3GC_PEEL_REGION = PARSETS+'/peeling/PKS0326-288.reg'
+CAL_3GC_PEEL_PARSET = PARSETS+'/cubical/peel.parset'
+
+
+# ------------------------------------------------------------------------
+#
 # wsclean defaults
 #
 
@@ -219,7 +235,7 @@ WSC_NWLAYERSFACTOR = 3
 WSC_PADDING = 1.2
 WSC_NOMODEL = False
 WSC_MASK = 'auto'
-WSC_THRESHOLD = 1e-6
+WSC_THRESHOLD = 5e-6
 WSC_AUTOTHRESHOLD = 0.3
 WSC_AUTOMASK = 5.0
 WSC_FITSPECTRALPOL = 4
@@ -238,6 +254,7 @@ WSC_PARALLELDECONVOLUTION = 2560 #
 
 MAKEMASK_THRESH = 6.0
 MAKEMASK_DILATION = 2
+MAKEMASK_BOXSIZE = 100
 
 
 # ------------------------------------------------------------------------
@@ -250,7 +267,7 @@ MAKEMASK_DILATION = 2
 DDF_DDID = 'D*'
 DDF_FIELD = 'F0'
 DDF_COLNAME = 'CORRECTED_DATA'
-DDF_CHUNKHOURS = 2
+DDF_CHUNKHOURS = 4
 DDF_DATASORT = 1
 # [Predict]
 DDF_PREDICTCOLNAME = '' # MODEL_DATA or leave empty to disable predict
@@ -265,15 +282,15 @@ DDF_CELL = 1.1
 # [Facets]
 DDF_DIAMMAX = 0.25
 DDF_DIAMMIN = 0.05
-DDF_NFACETS = 16 # crank this up (32?) to get better beam resolution if FITS beam is used
+DDF_NFACETS = 4 # crank this up (32?) to get better beam resolution if FITS beam is used
 DDF_PSFOVERSIZE = 1.5
-DDF_PADDING = 2.0 # padding needs increasing from default if NFacets is raised to prevent aliasing
+DDF_PADDING = 3.0 # padding needs increasing from default if NFacets is raised to prevent aliasing
 # [Weight]
-DDF_ROBUST = -0.3
+DDF_ROBUST = 0.0
 # [Comp]
 DDF_SPARSIFICATION = '0' # [100,30,10] grids every 100th visibility on major cycle 1, every 30th on cycle 2, etc.
 # [Parallel]
-DDF_NCPU = 32
+DDF_NCPU = 40
 # [Cache]
 DDF_CACHERESET = 0
 DDF_CACHEDIR = '.'
@@ -295,7 +312,7 @@ DDF_DDMODEGRID = 'AP'
 DDF_DDMODEDEGRID = 'AP'
 # [Deconv]
 DDF_GAIN = 0.12
-DDF_THRESHOLD = 0.0
+DDF_FLUXTHRESHOLD = 3e-6
 DDF_CYCLEFACTOR = 0
 DDF_RMSFACTOR = 3.0	
 DDF_DECONVMODE = 'hogbom'
@@ -304,7 +321,7 @@ DDF_SSD_MAXMAJORITER = 3
 DDF_SSD_MAXMINORITER = 120000
 DDF_SSD_ENLARGEDATA = 0
 DDF_HOGBOM_DECONVPEAKFACTOR = 0.15
-DDF_HOGBOM_MAXMAJORITER = 10
+DDF_HOGBOM_MAXMAJORITER = 6
 DDF_HOGBOM_MAXMINORITER = 100000
 DDF_HOGBOM_POLYFITORDER = 4
 # [Mask]
@@ -323,7 +340,7 @@ DDF_CONSERVEMEMORY = 1
 
 
 # [VisData]
-KMS_TCHUNK = 0.2
+KMS_TCHUNK = 0.5
 KMS_INCOL = 'CORRECTED_DATA'
 KMS_OUTCOL = 'MODEL_DATA'
 # [Beam]
@@ -335,18 +352,19 @@ KMS_NCHANBEAMPERMS = 95
 KMS_FITSPARANGLEINCDEG = 0.5
 KMS_FITSFEEDSWAP = 1
 # [ImageSkyModel]
+KMS_DICOMODEL = ''
 KMS_MAXFACETSIZE = 0.25
 # [DataSelection]
 KMS_UVMINMAX = '0.15,8500.0'
 KMS_FIELDID = 0
 KMS_DDID = 0
 # [Actions]
-KMS_NCPU = 32
+KMS_NCPU = 40
 KMS_DOBAR = 0
 KMS_DEBUGPDB = 0
 # [Solvers]
 KMS_SOLVERTYPE = 'CohJones'
-KMS_DT = 12
+KMS_DT = 5
 KMS_NCHANSOLS = 8
 # [KAFCA]
 KMS_NITERKF = 9

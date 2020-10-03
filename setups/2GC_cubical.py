@@ -41,15 +41,11 @@ def main():
     gen.setup_dir(IMAGES)
     gen.setup_dir(GAINTABLES)
 
-    # Enable running without containers
-    if CONTAINER_PATH is not None:
-        CONTAINER_RUNNER='singularity exec '
-    else:
-        CONTAINER_RUNNER=''
 
     # Get containers needed for this script
 
     CASA_CONTAINER = gen.get_container(CONTAINER_PATH,cfg.CASA_PATTERN)
+    CUBICAL_CONTAINER = gen.get_container(CONTAINER_PATH,cfg.CUBICAL_PATTERN)
     DDFACET_CONTAINER = gen.get_container(CONTAINER_PATH,cfg.DDFACET_PATTERN)
     MAKEMASK_CONTAINER = gen.get_container(CONTAINER_PATH,cfg.MAKEMASK_PATTERN)
     RAGAVI_CONTAINER = gen.get_container(CONTAINER_PATH,cfg.RAGAVI_PATTERN)
@@ -137,7 +133,7 @@ def main():
             id_wsclean1 = 'WSDMA'+code
             id_list.append(id_wsclean1)
 
-            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
+            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_wsclean(mslist=[myms],
                         imgname=data_img_prefix,
                         datacol='DATA',
@@ -162,7 +158,7 @@ def main():
             id_predict1 = 'WSDPR'+code
             id_list.append(id_predict1)
 
-            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
+            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_predict(msname=myms,imgbase=data_img_prefix)
 
             run_command = gen.job_handler(syscall=syscall,
@@ -184,17 +180,16 @@ def main():
             id_selfcal = 'CL2GC'+code
             id_list.append(id_selfcal)
 
-            casalog = LOGS+'/casa_2GC_'+id_selfcal+'.log'
 
-            syscall = CONTAINER_RUNNER+CASA_CONTAINER+' '
-            syscall += gen.generate_syscall_casa(casascript=OXKAT+'/2GC_casa_selfcal_target_amp_phases.py',
-                        casalogfile=casalog,
-                        extra_args='mslist='+myms)
+            syscall = 'singularity exec '+CUBICAL_CONTAINER+' '
+            syscall += gen.generate_syscall_cubical(parset=PARSETS+'/cubical/phasecal.parset',myms=myms)
 
             run_command = gen.job_handler(syscall=syscall,
                         jobname=id_selfcal,
                         infrastructure=INFRASTRUCTURE,
-                        dependency=id_predict1)
+                        dependency=id_predict1,
+                        slurm_config = cfg.SLURM_WSCLEAN,
+                        pbs_config = cfg.PBS_WSCLEAN)
 
             f.write(run_command)
 
@@ -204,18 +199,18 @@ def main():
             # Make gain table plots
                                                  
 
-            id_gainplots = 'PLTAB'+code
-            id_list.append(id_gainplots)
+            # id_gainplots = 'PLTAB'+code
+            # id_list.append(id_gainplots)
 
-            syscall = CONTAINER_RUNNER+RAGAVI_CONTAINER+' '
-            syscall += 'python3 '+OXKAT+'/PLOT_gaintables.py cal_2GC_*'+myms+'*'
+            # syscall = 'singularity exec '+RAGAVI_CONTAINER+' '
+            # syscall += 'python3 '+OXKAT+'/PLOT_gaintables.py cal_2GC_*'+myms+'*'
 
-            run_command = gen.job_handler(syscall=syscall,
-                        jobname=id_gainplots,
-                        infrastructure=INFRASTRUCTURE,
-                        dependency=id_selfcal)
+            # run_command = gen.job_handler(syscall=syscall,
+            #             jobname=id_gainplots,
+            #             infrastructure=INFRASTRUCTURE,
+            #             dependency=id_selfcal)
 
-            f.write(run_command)
+            # f.write(run_command)
 
 
             # ------------------------------------------------------------------------------
@@ -226,7 +221,7 @@ def main():
             id_wsclean2 = 'WSCMA'+code
             id_list.append(id_wsclean2)
 
-            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
+            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_wsclean(mslist=[myms],
                         imgname=corr_img_prefix,
                         datacol='CORRECTED_DATA',
@@ -248,7 +243,7 @@ def main():
             # STEP 6:
             # Make a FITS mask 
 
-            syscall = CONTAINER_RUNNER+MAKEMASK_CONTAINER+' '
+            syscall = 'singularity exec '+MAKEMASK_CONTAINER+' '
             syscall += gen.generate_syscall_makemask(restoredimage = corr_img_prefix+'-MFS-image.fits',
                                     outfile = corr_img_prefix+'-MFS-image.mask1.fits',
                                     thresh = 5.5,
@@ -273,7 +268,7 @@ def main():
             id_predict2 = 'WSCPR'+code
             id_list.append(id_predict2)
 
-            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
+            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_predict(msname=myms,imgbase=corr_img_prefix)
 
             run_command = gen.job_handler(syscall=syscall,
@@ -298,9 +293,6 @@ def main():
                 f.write(kill)
 
     f.close()
-
-    
-    gen.make_executable(submit_file)
 
 
 if __name__ == "__main__":

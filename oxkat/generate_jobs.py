@@ -127,7 +127,8 @@ def job_handler(syscall,
                 infrastructure,
                 dependency = None,
                 slurm_config = cfg.SLURM_DEFAULTS,
-                pbs_config = cfg.PBS_DEFAULTS):
+                pbs_config = cfg.PBS_DEFAULTS,
+                bind = cfg.BIND):
                 # slurm_time=cfg.SLURM_TIME,
                 # slurm_partition=cfg.SLURM_PARTITION,
                 # slurm_ntasks=cfg.SLURM_NTASKS,
@@ -141,7 +142,9 @@ def job_handler(syscall,
                 # pbs_ppn=cfg.PBS_PPN,
                 # pbs_mem=cfg.PBS_MEM):
 
+
     if infrastructure == 'idia' or infrastructure == 'hippo':
+
 
         slurm_time = slurm_config['TIME']
         slurm_partition = slurm_config['PARTITION']
@@ -248,21 +251,24 @@ def generate_syscall_casa(casascript,casalogfile,extra_args=''):
     return syscall
 
 
-def generate_syscall_cubical(parset,myms,prefix):
+def generate_syscall_cubical(parset,myms):#,prefix):
 
-    now = timenow()
-    outname = 'cube_'+prefix+'_'+myms.split('/')[-1]+'_'+now
+    # now = timenow()
+    # outname = 'cube_'+prefix+'_'+myms.split('/')[-1]+'_'+now
 
-    # Debugging stuff
-    syscall = 'bash -c "/sbin/sysctl vm.max_map_count ; '
-    syscall += 'df -h /dev/shm ; '
+    # # Debugging stuff
+    # syscall = 'bash -c "/sbin/sysctl vm.max_map_count ; '
+    # syscall += 'df -h /dev/shm ; '
 
-    syscall += 'gocubical '+parset+' '
+    # syscall += 'gocubical '+parset+' '
+    # syscall += '--data-ms='+myms+' '
+    # syscall += '--out-name='+outname
+
+    # # Move output to logs...
+    # syscall += ' ; mv '+outname+'* '+LOGS+'"'
+
+    syscall = 'gocubical '+parset+' '
     syscall += '--data-ms='+myms+' '
-    syscall += '--out-name='+outname
-
-    # Move output to logs...
-    syscall += ' ; mv '+outname+'* '+LOGS+'"'
 
     return syscall
 
@@ -395,10 +401,11 @@ def generate_syscall_wsclean(mslist,
 
 def generate_syscall_predict(msname,
                             imgbase,
+                            nwlayersfactor = cfg.WSC_NWLAYERSFACTOR,
                             chanout = cfg.WSC_CHANNELSOUT,
                             imsize = cfg.WSC_IMSIZE,
                             cellsize = cfg.WSC_CELLSIZE,
-                            predictchannels = cfg.WSC_PREDICTCHANNELS,
+#                            predictchannels = cfg.WSC_PREDICTCHANNELS,
                             mem = cfg.WSC_MEM):
 
     # Generate system call to run wsclean in predict mode
@@ -406,12 +413,13 @@ def generate_syscall_predict(msname,
     syscall = 'wsclean '
     syscall += '-log-time '
     syscall += '-predict '
+    syscall += '-nwlayers-factor '+str(nwlayersfactor)+' '
     syscall += '-channels-out '+str(chanout)+' '
-    syscall += ' -size '+str(imsize)+' '+str(imsize)+' '
+    syscall += '-size '+str(imsize)+' '+str(imsize)+' '
     syscall += '-scale '+cellsize+' '
     syscall += '-name '+imgbase+' '
     syscall += '-mem '+str(mem)+' '
-    syscall += '-predict-channels '+str(predictchannels)+' '
+#    syscall += '-predict-channels '+str(predictchannels)+' '
     syscall += msname
 
     return syscall 
@@ -421,6 +429,7 @@ def generate_syscall_makemask(restoredimage,
                             outfile = '',
                             thresh = cfg.MAKEMASK_THRESH,
                             dilation = cfg.MAKEMASK_DILATION,
+                            boxsize = cfg.MAKEMASK_BOXSIZE,
                             zoompix = cfg.DDF_NPIX):
 
     # Generate call to MakeMask.py and dilate the result
@@ -432,6 +441,7 @@ def generate_syscall_makemask(restoredimage,
     syscall += 'python '+cfg.TOOLS+'/pyMakeMask.py '
     syscall += '--threshold='+str(thresh)+' '
     syscall += '--dilate='+str(dilation)+' '
+    syscall += '--boxsize='+str(boxsize)+' '
     syscall += '--outfile='+str(outfile)+' '
     syscall += restoredimage
 
@@ -482,7 +492,7 @@ def generate_syscall_ddfacet(mspattern,
                           ddmodegrid = cfg.DDF_DDMODEGRID,
                           ddmodedegrid = cfg.DDF_DDMODEDEGRID,
                           gain = cfg.DDF_GAIN,
-                          threshold = cfg.DDF_THRESHOLD,
+                          fluxthreshold = cfg.DDF_FLUXTHRESHOLD,
                           cyclefactor = cfg.DDF_CYCLEFACTOR,
                           rmsfactor = cfg.DDF_RMSFACTOR,
                           deconvmode = cfg.DDF_DECONVMODE,
@@ -562,7 +572,7 @@ def generate_syscall_ddfacet(mspattern,
         syscall += '--DDESolutions-DDModeDeGrid '+ddmodedegrid+' '
     # [Deconv]
     syscall += '--Deconv-Gain '+str(gain)+' '
-    syscall += '--Deconv-Threshold '+str(threshold)+' '
+    syscall += '--Deconv-FluxThreshold '+str(fluxthreshold)+' '
     syscall += '--Deconv-CycleFactor '+str(cyclefactor)+' '
     syscall += '--Deconv-RMSFactor '+str(rmsfactor)+' '
     if deconvmode.lower() == 'ssd':
@@ -600,7 +610,7 @@ def generate_syscall_killms(myms,
                         baseimg,
                         outsols,
                         nodesfile,
-                        dicomodel,
+                        dicomodel = cfg.KMS_DICOMODEL,
                         tchunk = cfg.KMS_TCHUNK,
                         incol = cfg.KMS_INCOL,
                         outcol = cfg.KMS_OUTCOL,
@@ -646,7 +656,8 @@ def generate_syscall_killms(myms,
         syscall+= '--FITSFeedSwap '+str(fitsfeedswap)+' '
     # [ImageSkyModel]
     syscall+= '--BaseImageName '+baseimg+' '
-    syscall+= '--DicoModel '+dicomodel+' '
+    if dicomodel != '':
+        syscall+= '--DicoModel '+dicomodel+' '
     syscall+= '--NodesFile '+nodesfile+' '
     syscall+= '--MaxFacetSize '+str(maxfacetsize)+' '
     # [DataSelection]
