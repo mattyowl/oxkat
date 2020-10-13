@@ -41,6 +41,11 @@ def main():
     gen.setup_dir(IMAGES)
     gen.setup_dir(GAINTABLES)
 
+    # Enable running without containers
+    if CONTAINER_PATH is not None:
+        CONTAINER_RUNNER='singularity exec '
+    else:
+        CONTAINER_RUNNER=''
 
     # Get containers needed for this script
 
@@ -128,7 +133,7 @@ def main():
             id_wsclean = 'WSDMA'+code
             id_list.append(id_wsclean)
 
-            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_wsclean(mslist=[myms],
                         imgname=prepeel_img_prefix,
                         datacol='CORRECTED_DATA',
@@ -155,7 +160,7 @@ def main():
             id_imsplit = 'IMSPL'+code
             id_list.append(id_imsplit)
 
-            syscall = 'singularity exec '+CUBICAL_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' '
             syscall += 'python '+OXKAT+'/3GC_split_model_images.py '
             syscall += '--region '+cfg.CAL_3GC_PEEL_REGION+' '
             syscall += '--prefix '+prepeel_img_prefix+' '
@@ -178,7 +183,7 @@ def main():
             id_predict1 = 'WS1PR'+code
             id_list.append(id_predict1)
 
-            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_predict(msname=myms,imgbase=dir1_img_prefix,chanout=cfg.CAL_3GC_PEEL_NCHAN)
 
             run_command = gen.job_handler(syscall=syscall,
@@ -200,7 +205,7 @@ def main():
             id_addcol = 'ADCOL'+code
             id_list.append(id_addcol)
 
-            syscall = 'singularity exec '+CUBICAL_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' '
             syscall += 'python '+TOOLS+'/add_MS_column.py '
             syscall += '--colname '+cfg.CAL_3GC_PEEL_DIR1COLNAME+' '
             syscall += myms
@@ -221,7 +226,7 @@ def main():
             id_copycol = 'CPCOL'+code
             id_list.append(id_copycol)
 
-            syscall = 'singularity exec '+CUBICAL_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' '
             syscall += 'python '+TOOLS+'/copy_MS_column.py '
             syscall += '--fromcol MODEL_DATA '
             syscall += '--tocol '+cfg.CAL_3GC_PEEL_DIR1COLNAME+' '
@@ -243,7 +248,7 @@ def main():
             id_predict2 = 'WS2PR'+code
             id_list.append(id_predict2)
 
-            syscall = 'singularity exec '+WSCLEAN_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_predict(msname=myms,imgbase=prepeel_img_prefix,chanout=cfg.CAL_3GC_PEEL_NCHAN)
 
             run_command = gen.job_handler(syscall=syscall,
@@ -266,7 +271,7 @@ def main():
             id_list.append(id_peel)
 
 
-            syscall = 'singularity exec '+CUBICAL_CONTAINER+' '
+            syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' '
             syscall += gen.generate_syscall_cubical(parset=cfg.CAL_3GC_PEEL_PARSET,myms=myms)
 
             run_command = gen.job_handler(syscall=syscall,
