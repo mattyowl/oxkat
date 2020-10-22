@@ -113,7 +113,11 @@ def main():
             region = glob.glob('*'+targetname+'*.reg')
             if len(region) == 0:
                 print(gen.now()+'Please provide a region file')
-                sys.exit()
+                print("Reg file not supplied - will crash or complain on step 2")
+                region="noreg.reg"
+                #import IPython
+                #IPython.embed()
+                #sys.exit()
             else:
                 region = region[0]
 
