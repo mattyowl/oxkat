@@ -99,8 +99,17 @@ SLURM_WSCLEAN = {
     'PARTITION': 'Main',
     'NTASKS': '1',
     'NODES': '1',
-    'CPUS': '32',
-    'MEM': '230GB'
+    'CPUS': '18',
+    'MEM': 'GB'
+}
+
+SLURM_CUBICAL = {
+    'TIME': '47:59:00',
+    'PARTITION': 'Main',
+    'NTASKS': '1',
+    'NODES': '1',
+    'CPUS': '1',
+    'MEM': 'GB'
 }
 
 SLURM_HIGHMEM = {
@@ -199,11 +208,12 @@ CAL_2GC_APSOLINT = 'inf'             # Solution interval for amplitude and phase
 # 3GC peeling defaults
 #
 
-CAL_3GC_PEEL_NCHAN = 32
+CAL_3GC_PEEL_NCHAN = 16
 CAL_3GC_PEEL_DIR1COLNAME = 'DIR1_DATA'
 CAL_3GC_PEEL_REGION = PARSETS+'/peeling/J2214-1701.reg'
 CAL_3GC_PEEL_PARSET = PARSETS+'/cubical/peel.parset'
-
+CAL_3GC_PEEL_CUBICAL_NCPU = 3
+CAL_3GC_PEEL_CUBICAL_MAXCHUNKS = 1
 
 # ------------------------------------------------------------------------
 #
@@ -243,7 +253,7 @@ WSC_PREDICTCHANNELS = 64
 WSC_MEM = 95
 WSC_USEIDG = False # use image-domain gridder (not useable yet)
 WSC_IDGMODE = 'CPU'
-WSC_PARALLELDECONVOLUTION = 2560 # 
+WSC_PARALLELDECONVOLUTION = 1280 # 
 
 
 # ------------------------------------------------------------------------

@@ -110,6 +110,7 @@ def main():
             print(gen.now()+'Target:     '+targetname)
             print(gen.now()+'MS:         '+myms)
             print(gen.now()+'Using mask: '+mask)
+            print(gen.now()+'Using peel regions: '+cfg.CAL_3GC_PEEL_REGION)
 
             f.write('\n# '+targetname+'\n')
         
@@ -272,13 +273,15 @@ def main():
 
 
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' '
-            syscall += gen.generate_syscall_cubical(parset=cfg.CAL_3GC_PEEL_PARSET,myms=myms)
+            syscall += gen.generate_syscall_cubical(parset=cfg.CAL_3GC_PEEL_PARSET,myms=myms,
+                                                    dist_ncpu=cfg.CAL_3GC_PEEL_CUBICAL_NCPU,
+                                                    dist_max_chunks=cfg.CAL_3GC_PEEL_CUBICAL_MAXCHUNKS)
 
             run_command = gen.job_handler(syscall=syscall,
                         jobname=id_peel,
                         infrastructure=INFRASTRUCTURE,
                         dependency=id_predict2,
-                        slurm_config = cfg.SLURM_WSCLEAN,
+                        slurm_config = cfg.SLURM_CUBICAL,
                         pbs_config = cfg.PBS_WSCLEAN)
 
             f.write(run_command)
