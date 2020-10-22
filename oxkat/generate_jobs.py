@@ -46,7 +46,7 @@ def get_container(path,pattern):
 def set_infrastructure(args):
 
     if len(args) == 1:
-        print('Please specify infrastructure (idia / chpc / hippo / node)')
+        print('Please specify infrastructure (idia / chpc / hippo / node / containerless_node)')
         sys.exit()
 
     if args[1].lower() == 'idia':
@@ -58,6 +58,9 @@ def set_infrastructure(args):
     elif args[1].lower() == 'node':
         infrastructure = 'node'
         CONTAINER_PATH = cfg.NODE_CONTAINER_PATH
+    elif args[1].lower() == 'containerless_node':
+        infrastructure = 'node'
+        CONTAINER_PATH = None 
     elif args[1].lower() == 'hippo':
         infrastructure = 'hippo'
         CONTAINER_PATH = None
