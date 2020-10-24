@@ -161,7 +161,7 @@ def job_handler(syscall,
         if infrastructure == 'hippo':
             if int(slurm_cpus) > 20:
                 slurm_cpus='20'
-            if int(slurm_cpus) < 20:
+            if int(slurm_cpus) < 10 and syscall.find("cubical") == False:
                 slurm_mem = '60000'
             else:
                 slurm_mem = '64000'
