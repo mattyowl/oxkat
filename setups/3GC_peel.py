@@ -287,6 +287,30 @@ def main():
             f.write(run_command)
 
 
+            # ------------------------------------------------------------------------------
+            # STEP 8: 
+            # wsclean on peeled image (for checking)
+
+            id_wsclean = 'WS3GC'+code
+            id_list.append(id_wsclean)
+
+            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
+            syscall += gen.generate_syscall_wsclean(mslist=[myms],
+                        imgname=prepeel_img_prefix,
+                        datacol='CORRECTED_DATA',
+                        briggs=-0.3,
+                        bda=True,
+                        mask=mask)
+
+            run_command = gen.job_handler(syscall=syscall,
+                        jobname=id_wsclean,
+                        infrastructure=INFRASTRUCTURE,
+                        slurm_config = cfg.SLURM_WSCLEAN,
+                        pbs_config = cfg.PBS_WSCLEAN)
+
+
+            f.write(run_command)
+            
 
             # ------------------------------------------------------------------------------
 
