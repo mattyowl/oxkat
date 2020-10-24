@@ -305,6 +305,7 @@ def main():
             run_command = gen.job_handler(syscall=syscall,
                         jobname=id_wsclean,
                         infrastructure=INFRASTRUCTURE,
+                        dependency=id_peel,
                         slurm_config = cfg.SLURM_WSCLEAN,
                         pbs_config = cfg.PBS_WSCLEAN)
 
