@@ -118,6 +118,7 @@ def main():
 
 
             prepeel_img_prefix = IMAGES+'/img_'+myms+'_prepeel'
+            postpeel_img_prefix = IMAGES+'/img_'+myms+'_postpeel'
             dir1_img_prefix = prepeel_img_prefix+'-'+cfg.CAL_3GC_PEEL_REGION.split('/')[-1].split('.')[0]
 
 
@@ -296,7 +297,7 @@ def main():
 
             syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
             syscall += gen.generate_syscall_wsclean(mslist=[myms],
-                        imgname=prepeel_img_prefix,
+                        imgname=postpeel_img_prefix,
                         datacol='CORRECTED_DATA',
                         briggs=-0.3,
                         bda=True,

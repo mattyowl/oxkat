@@ -212,7 +212,7 @@ CAL_3GC_PEEL_NCHAN = 16
 CAL_3GC_PEEL_DIR1COLNAME = 'DIR1_DATA'
 CAL_3GC_PEEL_REGION = PARSETS+'/peeling/J2214-1701-mjh.reg'
 CAL_3GC_PEEL_PARSET = PARSETS+'/cubical/peel.parset'
-CAL_3GC_PEEL_CUBICAL_NCPU = 3
+CAL_3GC_PEEL_CUBICAL_NCPU = 2
 CAL_3GC_PEEL_CUBICAL_MAXCHUNKS = 1
 
 # ------------------------------------------------------------------------
