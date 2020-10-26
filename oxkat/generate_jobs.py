@@ -161,7 +161,7 @@ def job_handler(syscall,
         if infrastructure == 'hippo':
             if int(slurm_cpus) > 20:
                 slurm_cpus='20'
-            if int(slurm_cpus) < 20:
+            if int(slurm_cpus) < 10 and syscall.find("cubical") == False:
                 slurm_mem = '60000'
             else:
                 slurm_mem = '64000'
@@ -254,7 +254,7 @@ def generate_syscall_casa(casascript,casalogfile,extra_args=''):
     return syscall
 
 
-def generate_syscall_cubical(parset,myms):#,prefix):
+def generate_syscall_cubical(parset, myms, dist_ncpu = None, dist_max_chunks = None):#,prefix):
 
     # now = timenow()
     # outname = 'cube_'+prefix+'_'+myms.split('/')[-1]+'_'+now
@@ -272,6 +272,10 @@ def generate_syscall_cubical(parset,myms):#,prefix):
 
     syscall = 'gocubical '+parset+' '
     syscall += '--data-ms='+myms+' '
+    if dist_ncpu is not None:
+        syscall +='--dist-ncpu %d ' % (dist_ncpu)
+    if dist_max_chunks is not None:
+        syscall +='--dist-max-chunks %d ' % (dist_max_chunks)
 
     return syscall
 

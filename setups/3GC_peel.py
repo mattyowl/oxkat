@@ -110,6 +110,7 @@ def main():
             print(gen.now()+'Target:     '+targetname)
             print(gen.now()+'MS:         '+myms)
             print(gen.now()+'Using mask: '+mask)
+            print(gen.now()+'Using peel regions: '+cfg.CAL_3GC_PEEL_REGION)
 
             f.write('\n# '+targetname+'\n')
         
@@ -117,6 +118,7 @@ def main():
 
 
             prepeel_img_prefix = IMAGES+'/img_'+myms+'_prepeel'
+            postpeel_img_prefix = IMAGES+'/img_'+myms+'_postpeel'
             dir1_img_prefix = prepeel_img_prefix+'-'+cfg.CAL_3GC_PEEL_REGION.split('/')[-1].split('.')[0]
 
 
@@ -272,18 +274,45 @@ def main():
 
 
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' '
-            syscall += gen.generate_syscall_cubical(parset=cfg.CAL_3GC_PEEL_PARSET,myms=myms)
+            syscall += gen.generate_syscall_cubical(parset=cfg.CAL_3GC_PEEL_PARSET,myms=myms,
+                                                    dist_ncpu=cfg.CAL_3GC_PEEL_CUBICAL_NCPU,
+                                                    dist_max_chunks=cfg.CAL_3GC_PEEL_CUBICAL_MAXCHUNKS)
 
             run_command = gen.job_handler(syscall=syscall,
                         jobname=id_peel,
                         infrastructure=INFRASTRUCTURE,
                         dependency=id_predict2,
-                        slurm_config = cfg.SLURM_WSCLEAN,
+                        slurm_config = cfg.SLURM_CUBICAL,
                         pbs_config = cfg.PBS_WSCLEAN)
 
             f.write(run_command)
 
 
+            # ------------------------------------------------------------------------------
+            # STEP 8: 
+            # wsclean on peeled image (for checking)
+
+            id_wsclean = 'WS3GC'+code
+            id_list.append(id_wsclean)
+
+            syscall = CONTAINER_RUNNER+WSCLEAN_CONTAINER+' '
+            syscall += gen.generate_syscall_wsclean(mslist=[myms],
+                        imgname=postpeel_img_prefix,
+                        datacol='CORRECTED_DATA',
+                        briggs=-0.3,
+                        bda=True,
+                        mask=mask)
+
+            run_command = gen.job_handler(syscall=syscall,
+                        jobname=id_wsclean,
+                        infrastructure=INFRASTRUCTURE,
+                        dependency=id_peel,
+                        slurm_config = cfg.SLURM_WSCLEAN,
+                        pbs_config = cfg.PBS_WSCLEAN)
+
+
+            f.write(run_command)
+            
 
             # ------------------------------------------------------------------------------
 
