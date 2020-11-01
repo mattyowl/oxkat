@@ -111,6 +111,7 @@ def main():
             print(gen.now()+'MS:         '+myms)
             print(gen.now()+'Using mask: '+mask)
             print(gen.now()+'Using peel regions: '+cfg.CAL_3GC_PEEL_REGION)
+            assert(o.exists(cfg.CAL_3GC_PEEL_REGION) == True)
 
             f.write('\n# '+targetname+'\n')
         
