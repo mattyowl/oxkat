@@ -222,10 +222,8 @@ def job_handler(syscall,
         if infrastructure == 'hippo':
             if int(slurm_cpus) > 20:
                 slurm_cpus='20'
-            if int(slurm_cpus) < 20:
-                slurm_mem = '60000'
-            else:
-                slurm_mem = '64000'
+            # Disks are dead on some hippo nodes - RAM disk used, so ~59 GB is max
+            slurm_mem='59000'
             slurm_partition = 'debug'
 
         slurm_runfile = cfg.SCRIPTS+'/slurm_'+jobname+'.sh'
@@ -351,10 +349,8 @@ def absmem_helper(step,infrastructure,absmem):
         slurm_cpus = step['slurm_config']['CPUS']
         if int(slurm_cpus) > 20:
             slurm_cpus='20'
-        if int(slurm_cpus) < 20:
-            config_mem = '60gb'
-        else:
-            config_mem = '64gb'
+        # Can only guarantee ~59 GB on hippo (some nodes have RAM disks)
+        config_mem = '59gb'
     if infrastructure != 'node':
         absmem = mem_string_to_gb(config_mem)
     return absmem
