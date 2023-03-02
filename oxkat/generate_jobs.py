@@ -350,7 +350,8 @@ def absmem_helper(step,infrastructure,absmem):
         if int(slurm_cpus) > 20:
             slurm_cpus='20'
         # Can only guarantee ~59 GB on hippo (some nodes have RAM disks)
-        config_mem = '59gb'
+        # Going more conservative (some fields still crashed with 59 GB)
+        config_mem = '55gb'
     if infrastructure != 'node':
         absmem = mem_string_to_gb(config_mem)
     return absmem
