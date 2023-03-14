@@ -255,8 +255,16 @@ def job_handler(syscall,
         else:
             slurm_reservation = ''
 
+        if infrastructure == 'hippo':
+            # Needed for alias commands to work
+            slurm_source_script="source /home/mjh/SETUP_LOCAL.sh\n"
+            slurm_shell="#!/bin/sh"
+        else:
+            slurm_source_script=""
+            slurm_shell="#!/bin/bash"
+
         f = open(slurm_runfile,'w')
-        f.writelines(['#!/bin/bash\n',
+        f.writelines([slurm_shell+'\n',
             '#file: '+slurm_runfile+':\n',
             '#SBATCH --job-name='+jobname+'\n',
             '#SBATCH --time='+slurm_time+'\n',
@@ -270,6 +278,7 @@ def job_handler(syscall,
             slurm_exclude,
             slurm_account,
             slurm_reservation,
+            slurm_source_script,
             'SECONDS=0\n',
             syscall+'\n',
             'echo "****ELAPSED "$SECONDS" '+jobname+'"\n'])
