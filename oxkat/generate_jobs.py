@@ -281,8 +281,8 @@ def job_handler(syscall,
             slurm_source_script,
             'SECONDS=0\n',
             syscall+'\n',
-            'echo "****ELAPSED "$SECONDS" '+jobname+'"\n'])
-#            'sleep 10\n'])
+            #'echo "****ELAPSED "$SECONDS" '+jobname+'"\n'])
+            'sleep 10\n'])
         f.close()
 
         make_executable(slurm_runfile)
@@ -318,7 +318,7 @@ def job_handler(syscall,
             'module load chpc/singularity\n'
             'cd '+cfg.CWD+'\n',
             syscall+'\n',
-            'echo "****ELAPSED "$SECONDS" "'+jobname+'"\n',
+            #'echo "****ELAPSED "$SECONDS" "'+jobname+'"\n',
             'sleep 10\n'])
         f.close()
 
