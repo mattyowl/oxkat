@@ -145,6 +145,7 @@ def get_states(myms,
     modes = state_tab.getcol('OBS_MODE')
     state_tab.close()
 
+    target_state=None
     for i in range(0,len(modes)):
         if modes[i] == target_intent:
             target_state = i
@@ -154,6 +155,13 @@ def get_states(myms,
             secondary_state = i
         if modes[i] == 'UNKNOWN':
             unknown_state = i
+
+    # See: https://github.com/IanHeywood/oxkat/issues/46
+    # If measurement set has this problem, we'll _assume_ we can try 'UNKNOWN' as the missing state
+    # Added to fix issue with MALS data (captureBlockId = 1597883159)
+    if target_state is None:
+        print("target_state is None - trying again with 'UNKNOWN' intent")
+        primary_state, secondary_state, target_state, unknown_state=get_states(myms, primary_intent, secondary_intent, 'UNKNOWN')
 
     return primary_state, secondary_state, target_state, unknown_state
 
