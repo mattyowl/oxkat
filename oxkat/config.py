@@ -128,7 +128,7 @@ CHPC_ALLOCATION = os.environ['PBS_PROJECT']
 
 PBS_DEFAULTS = {
 	'PROGRAM': CHPC_ALLOCATION,
-	'WALLTIME': '12:00:00',
+	'WALLTIME': '24:00:00',
 	'QUEUE': 'serial',
 	'NODES': '1',
 	'PPN': '8',
