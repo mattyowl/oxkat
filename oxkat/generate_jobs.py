@@ -281,8 +281,8 @@ def job_handler(syscall,
             slurm_account,
             slurm_reservation,
             'SECONDS=0\n',
-            syscall+'\n',
-            'echo "****ELAPSED "$SECONDS" '+jobname+'"\n'])
+            syscall+'\n'])
+#            'echo "****ELAPSED "$SECONDS" '+jobname+'"\n'])
 #            'sleep 10\n'])
         f.close()
 
