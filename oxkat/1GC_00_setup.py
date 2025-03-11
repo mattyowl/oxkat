@@ -181,6 +181,10 @@ def get_states(master_ms,
     modes = state_tab.getcol('OBS_MODE')
     state_tab.close()
 
+    target_state=None
+    primary_state=None
+    secondary_state=None
+    unknown_state=None
     for i in range(0,len(modes)):
         if target_intent in modes[i]:
             target_state = i
@@ -190,6 +194,15 @@ def get_states(master_ms,
             secondary_state = i
         if modes[i] == 'UNKNOWN':
             unknown_state = i
+
+    # HACK: if we have a missing state and an unknown one, take a punt on assigning it to the missing state
+    if unknown_state is not None:
+        if target_state is None:
+            target_state=unknown_state
+        if primary_state is None:
+            primary_state=unknown_state
+        if secondary_state is None:
+            secondary_state=unknown_state
 
     return primary_state, secondary_state, target_state, unknown_state
 
