@@ -281,6 +281,7 @@ def job_handler(syscall,
             slurm_account,
             slurm_reservation,
             'SECONDS=0\n',
+            'unset PYTHONUSERBASE\n',  # Needed or tricolour finds our newer numpy
             syscall+'\n'])
 #            'echo "****ELAPSED "$SECONDS" '+jobname+'"\n'])
 #            'sleep 10\n'])
