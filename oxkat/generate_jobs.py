@@ -317,10 +317,11 @@ def job_handler(syscall,
             '#PBS -o '+pbs_logfile+'\n'
             '#PBS -e '+pbs_errfile+'\n'
             'SECONDS=0\n'
+            'unset PYTHONUSERBASE\n',  # Needed or tricolour finds our newer numpy
             'module load chpc/singularity\n'
             'cd '+cfg.CWD+'\n',
             syscall+'\n',
-            'echo "****ELAPSED "$SECONDS" "'+jobname+'"\n',
+            # 'echo "****ELAPSED "$SECONDS" "'+jobname+'"\n',
             'sleep 10\n'])
         f.close()
 
