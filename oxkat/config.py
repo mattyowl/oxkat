@@ -137,6 +137,7 @@ SLURM_HIGHMEM = {
 #
 
 CHPC_ALLOCATION = os.environ['PBS_PROJECT']
+PBS_EMAIL = os.environ['PBS_EMAIL']
 
 PBS_DEFAULTS = {
 	'PROGRAM': CHPC_ALLOCATION,
@@ -144,7 +145,8 @@ PBS_DEFAULTS = {
 	'QUEUE': 'serial',
 	'NODES': '1',
 	'PPN': '8',
-	'MEM': '64gb'
+	'MEM': '64gb',
+	'EMAIL': PBS_EMAIL
 }
 
 PBS_TRICOLOUR = {
@@ -153,7 +155,8 @@ PBS_TRICOLOUR = {
 	'QUEUE': 'serial',
 	'NODES': '1',
 	'PPN': '24',
-	'MEM': '120gb'
+	'MEM': '120gb',
+	'EMAIL': PBS_EMAIL
 }
 
 PBS_WSCLEAN = {
@@ -162,7 +165,8 @@ PBS_WSCLEAN = {
 	'QUEUE': 'serial',
 	'NODES': '1',
 	'PPN': '24',
-	'MEM': '120gb'
+	'MEM': '120gb',
+	'EMAIL': PBS_EMAIL
 }
 
 PBS_EXTRALONG = {
@@ -171,7 +175,8 @@ PBS_EXTRALONG = {
     'QUEUE': 'serial',
     'NODES': '1',
     'PPN': '24',
-    'MEM': '120gb'
+    'MEM': '120gb',
+	'EMAIL': PBS_EMAIL
 }
 
 # ------------------------------------------------------------------------

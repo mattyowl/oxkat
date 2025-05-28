@@ -297,6 +297,7 @@ def job_handler(syscall,
         pbs_nodes = pbs_config['NODES']
         pbs_ppn = pbs_config['PPN']
         pbs_mem = pbs_config['MEM']
+        pbs_email = pbs_config['EMAIL']
 
         pbs_runfile = cfg.SCRIPTS+'/pbs_'+jobname+'.sh'
         pbs_logfile = cfg.LOGS+'/pbs_'+jobname+'.log'
@@ -316,6 +317,8 @@ def job_handler(syscall,
             '#PBS -q '+pbs_queue+'\n'
             '#PBS -o '+pbs_logfile+'\n'
             '#PBS -e '+pbs_errfile+'\n'
+            '#PBS -m abe'+'\n'
+            '#PBS -M '+pbs_email+'\n'
             'SECONDS=0\n'
             'unset PYTHONUSERBASE\n',  # Needed or tricolour finds our newer numpy
             'module load chpc/singularity\n'
