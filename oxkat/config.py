@@ -71,7 +71,7 @@ PYBDSF_PATTERN = 'oxkat-0.41'
 RAGAVI_PATTERN = 'oxkat-0.41'
 SHADEMS_PATTERN = 'oxkat-0.41'
 TRICOLOUR_PATTERN = 'oxkat-0.41'
-WSCLEAN_PATTERN = 'oxkat-0.41'
+WSCLEAN_PATTERN = 'wsclean_latest' #'oxkat-0.41'
 
 
 # ------------------------------------------------------------------------
