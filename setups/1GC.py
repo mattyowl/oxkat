@@ -72,7 +72,7 @@ def main():
     step['step'] = 0
     step['comment'] = 'Split and average master MS'
     step['dependency'] = None
-    step['id'] = 'SPPRE'+code
+    step['id'] = '1GC_SPPRE'+code
     syscall = CONTAINER_RUNNER+CASA_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += gen.generate_syscall_casa(casascript=cfg.OXKAT+'/PRE_casa_average_to_1k_add_wtspec.py')
     step['syscall'] = syscall
@@ -83,7 +83,7 @@ def main():
     step['step'] = 1
     step['comment'] = 'Apply basic flagging steps to all fields'
     step['dependency'] = 0
-    step['id'] = 'FGBAS'+code
+    step['id'] = '1GC_FGBAS'+code
     syscall = CONTAINER_RUNNER+CASA_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += gen.generate_syscall_casa(casascript=cfg.OXKAT+'/1GC_02_casa_basic_flags.py')
     step['syscall'] = syscall
@@ -94,7 +94,7 @@ def main():
     step['step'] = 2
     step['comment'] = 'Run auto-flaggers on calibrators'
     step['dependency'] = 1
-    step['id'] = 'FGCAL'+code
+    step['id'] = '1GC_FGCAL'+code
     syscall = CONTAINER_RUNNER+CASA_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += gen.generate_syscall_casa(casascript=cfg.OXKAT+'/1GC_05_casa_autoflag_cals_DATA.py')
     step['syscall'] = syscall
@@ -105,7 +105,7 @@ def main():
     step['step'] = 3
     step['comment'] = 'Generate reference calibration solutions and apply to target(s)'
     step['dependency'] = 2
-    step['id'] = 'CL1GC'+code
+    step['id'] = '1GC_CL1GC'+code
     syscall = CONTAINER_RUNNER+CASA_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += gen.generate_syscall_casa(casascript=cfg.OXKAT+'/1GC_casa_refcal.py')
     step['syscall'] = syscall
@@ -116,7 +116,7 @@ def main():
     step['step'] = 4
     step['comment'] = 'Plot the gain solutions'
     step['dependency'] = 3
-    step['id'] = 'PLTAB'+code
+    step['id'] = '1GC_PLTAB'+code
     syscall = CONTAINER_RUNNER+RAGAVI_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += 'python3 '+cfg.OXKAT+'/PLOT_gaintables.py cal_1GC_*'
     step['syscall'] = syscall
@@ -127,7 +127,7 @@ def main():
     step['step'] = 5
     step['comment'] = 'Split the corrected target data'
     step['dependency'] = 3
-    step['id'] = 'SPTRG'+code
+    step['id'] = '1GC_SPTRG'+code
     syscall = CONTAINER_RUNNER+CASA_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += gen.generate_syscall_casa(casascript=cfg.OXKAT+'/1GC_09_casa_split_targets.py')
     step['syscall'] = syscall
@@ -138,7 +138,7 @@ def main():
     step['step'] = 6
     step['comment'] = 'Plot the corrected calibrator visibilities'
     step['dependency'] = 5
-    step['id'] = 'PLVIS'+code
+    step['id'] = '1GC_PLVIS'+code
     syscall = CONTAINER_RUNNER+SHADEMS_CONTAINER+' ' if USE_SINGULARITY else ''
     syscall += 'python3 '+cfg.OXKAT+'/1GC_10_plot_visibilities.py'
     step['syscall'] = syscall

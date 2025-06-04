@@ -116,7 +116,7 @@ def main():
             step['step'] = 0
             step['comment'] = 'Run Tricolour on '+myms
             step['dependency'] = None
-            step['id'] = 'TRIC0'+code
+            step['id'] = 'FL_TRIC0'+code
             step['slurm_config'] = cfg.SLURM_TRICOLOUR
             step['pbs_config'] = cfg.PBS_TRICOLOUR
             syscall = CONTAINER_RUNNER+TRICOLOUR_CONTAINER+' ' if USE_SINGULARITY else ''
@@ -133,7 +133,7 @@ def main():
             step['step'] = 1
             step['comment'] = 'Blind wsclean on DATA column of '+myms
             step['dependency'] = 0
-            step['id'] = 'WSDBL'+code
+            step['id'] = 'FL_WSDBL'+code
             step['slurm_config'] = cfg.SLURM_WSCLEAN
             step['pbs_config'] = cfg.PBS_WSCLEAN
             absmem = gen.absmem_helper(step,INFRASTRUCTURE,cfg.WSC_ABSMEM)
@@ -155,7 +155,7 @@ def main():
             step['step'] = 2
             step['comment'] = 'Make initial cleaning mask for '+targetname
             step['dependency'] = 1
-            step['id'] = 'MASK0'+code
+            step['id'] = 'FL_MASK0'+code
             syscall = CONTAINER_RUNNER+ASTROPY_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += gen.generate_syscall_makemask(restoredimage = img_prefix+'-MFS-image.fits',
                         outfile = img_prefix+'-MFS-image.mask0.fits',
@@ -168,7 +168,7 @@ def main():
             step['step'] = 3
             step['comment'] = 'Apply primary beam correction to '+targetname+' image'
             step['dependency'] = 1
-            step['id'] = 'PBCOR'+code
+            step['id'] = 'FL_PBCOR'+code
             syscall = CONTAINER_RUNNER+ASTROPY_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/pbcor_katbeam.py --band '+band[0]+' '+img_prefix+'-MFS-image.fits'
             step['syscall'] = syscall
@@ -180,7 +180,7 @@ def main():
                 step['step'] = 4
                 step['comment'] = 'Backup flag table for '+myms
                 step['dependency'] = 1
-                step['id'] = 'SAVFG'+code
+                step['id'] = 'FL_SAVFG'+code
                 syscall = CONTAINER_RUNNER+CASA_CONTAINER+' ' if USE_SINGULARITY else ''
                 syscall += 'casa -c '+OXKAT+'/FLAG_casa_backup_flag_table.py --nologger --log2term --nogui '
                 syscall += 'versionname=tricolour1 mslist='+myms

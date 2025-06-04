@@ -153,7 +153,7 @@ def main():
             step['step'] = 0
             step['comment'] = 'Run masked wsclean, high freq/angular resolution, on CORRECTED_DATA column of '+myms
             step['dependency'] = None
-            step['id'] = 'WSDMA'+code
+            step['id'] = '3GCP_WSDMA'+code
             step['slurm_config'] = cfg.SLURM_EXTRALONG
             step['pbs_config'] = cfg.PBS_EXTRALONG
             absmem = gen.absmem_helper(step,INFRASTRUCTURE,cfg.WSC_ABSMEM)
@@ -177,7 +177,7 @@ def main():
             step['step'] = 1
             step['comment'] = 'Fix any NaN values in blanked wsclean sub-band models'
             step['dependency'] = 0
-            step['id'] = 'FXNAN'+code
+            step['id'] = '3GCP_FXNAN'+code
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/fix_nan_models.py '+prepeel_img_prefix+'-0'
             step['syscall'] = syscall
@@ -188,7 +188,7 @@ def main():
             step['step'] = 2
             step['comment'] = 'Extract problem source defined by region into a separate set of model images'
             step['dependency'] = 1
-            step['id'] = 'IMSPL'+code
+            step['id'] = '3GCP_IMSPL'+code
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+OXKAT+'/3GC_split_model_images.py '
             syscall += '--region '+CAL_3GC_PEEL_REGION+' '
@@ -201,7 +201,7 @@ def main():
             step['step'] = 3
             step['comment'] = 'Predict problem source visibilities into MODEL_DATA column of '+myms
             step['dependency'] = 2
-            step['id'] = 'WS1PR'+code
+            step['id'] = '3GCP_WS1PR'+code
             step['slurm_config'] = cfg.SLURM_WSCLEAN
             step['pbs_config'] = cfg.PBS_WSCLEAN
             absmem = gen.absmem_helper(step,INFRASTRUCTURE,cfg.WSC_ABSMEM)
@@ -215,7 +215,7 @@ def main():
             step['step'] = 4
             step['comment'] = 'Add '+cfg.CAL_3GC_PEEL_DIR1COLNAME+' column to '+myms
             step['dependency'] = 3
-            step['id'] = 'ADDIR'+code
+            step['id'] = '3GCP_ADDIR'+code
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/add_MS_column.py '
             syscall += '--colname '+cfg.CAL_3GC_PEEL_DIR1COLNAME+' '
@@ -228,7 +228,7 @@ def main():
             step['step'] = 5
             step['comment'] = 'Copy MODEL_DATA to '+cfg.CAL_3GC_PEEL_DIR1COLNAME
             step['dependency'] = 4
-            step['id'] = 'CPMOD'+code
+            step['id'] = '3GCP_CPMOD'+code
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/copy_MS_column.py '
             syscall += '--fromcol MODEL_DATA '
@@ -242,7 +242,7 @@ def main():
             step['step'] = 6
             step['comment'] = 'Predict full sky model visibilities into MODEL_DATA column of '+myms
             step['dependency'] = 5
-            step['id'] = 'WS2PR'+code
+            step['id'] = '3GCP_WS2PR'+code
             step['slurm_config'] = cfg.SLURM_WSCLEAN
             step['pbs_config'] = cfg.PBS_WSCLEAN
             absmem = gen.absmem_helper(step,INFRASTRUCTURE,cfg.WSC_ABSMEM)
@@ -256,7 +256,7 @@ def main():
             step['step'] = 7
             step['comment'] = 'Copy CORRECTED_DATA to DATA'
             step['dependency'] = 6
-            step['id'] = 'CPCOR'+code
+            step['id'] = '3GCP_CPCOR'+code
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/copy_MS_column.py '
             syscall += '--fromcol CORRECTED_DATA '
@@ -270,7 +270,7 @@ def main():
             step['step'] = 8
             step['comment'] = 'Run CubiCal to solve for G (full model) and dE (problem source), peel out problem source'
             step['dependency'] = 7
-            step['id'] = 'CL3GC'+code
+            step['id'] = '3GCP_CL3GC'+code
             step['slurm_config'] = cfg.SLURM_WSCLEAN
             step['pbs_config'] = cfg.PBS_WSCLEAN
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
