@@ -317,7 +317,7 @@ def job_handler(syscall,
             '#PBS -q '+pbs_queue+'\n'
             '#PBS -o '+pbs_logfile+'\n'
             '#PBS -e '+pbs_errfile+'\n'
-            '#PBS -m abe'+'\n'
+            '#PBS -m ae'+'\n'
             '#PBS -M '+pbs_email+'\n'
             'SECONDS=0\n'
             'unset PYTHONUSERBASE\n',  # Needed or tricolour finds our newer numpy
