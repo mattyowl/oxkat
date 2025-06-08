@@ -112,6 +112,7 @@ def main():
             pbs_config = step['pbs_config']
         else:
             pbs_config = cfg.PBS_DEFAULTS
+            pbs_config['WALLTIME'] = '24:00:00'
         comment = step['comment']
 
         run_command = gen.job_handler(syscall = syscall,
