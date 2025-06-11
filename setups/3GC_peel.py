@@ -272,7 +272,7 @@ def main():
             step['dependency'] = 7
             step['id'] = '3GCP_CL3GC'+code
             step['slurm_config'] = cfg.SLURM_WSCLEAN
-            step['pbs_config'] = cfg.PBS_WSCLEAN
+            step['pbs_config'] = cfg.PBS_CUBICAL
             syscall = CONTAINER_RUNNER+CUBICAL_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += gen.generate_syscall_cubical(parset=cfg.CAL_3GC_PEEL_PARSET, myms=myms, extra_args='--out-name '+outname+' --out-dir '+outdir)
             step['syscall'] = syscall
