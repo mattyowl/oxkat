@@ -156,7 +156,7 @@ def main():
             step['step'] = 0
             step['comment'] = 'Run DDFacet, masked deconvolution of CORRECTED_DATA column of '+myms
             step['dependency'] = None
-            step['id'] = '3GCF_DDCMA'+code
+            step['id'] = '3FaDDCMA'+code
             step['slurm_config'] = cfg.SLURM_HIGHMEM
             step['pbs_config'] = cfg.PBS_WSCLEAN
             syscall = CONTAINER_RUNNER+DDFACET_CONTAINER+' ' if USE_SINGULARITY else ''
@@ -173,7 +173,7 @@ def main():
             step['step'] = 1
             step['comment'] = 'Convert the DS9 region into a numpy file that killMS will recognise'
             step['dependency'] = 0
-            step['id'] = '3GCF_RG2NP'+code
+            step['id'] = '3FbRG2NP'+code
             syscall = CONTAINER_RUNNER+DDFACET_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/reg2npy.py '+CAL_3GC_FACET_REGION
             step['syscall'] = syscall
@@ -184,7 +184,7 @@ def main():
             step['step'] = 2
             step['comment'] = 'Run killMS'
             step['dependency'] = 1
-            step['id'] = '3GCF_KILMS'+code
+            step['id'] = '3FcKILMS'+code
             step['slurm_config'] = cfg.SLURM_HIGHMEM
             step['slurm_exclude'] = 'highmem-003' 
             step['pbs_config'] = cfg.PBS_WSCLEAN
@@ -202,7 +202,7 @@ def main():
             step['step'] = 3
             step['comment'] = 'Plot killMS solutions'
             step['dependency'] = 2
-            step['id'] = '3GCF_PLKMS'+code
+            step['id'] = '3FdPLKMS'+code
             syscall = CONTAINER_RUNNER+ASTROPY_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+OXKAT+'/PLOT_killMS_sols.py '+myms+' killms-'+cfg.KMS_SOLVERTYPE
             step['syscall'] = syscall
@@ -213,7 +213,7 @@ def main():
             step['step'] = 4
             step['comment'] = 'Run DDFacet on CORRECTED_DATA of '+myms+', applying killMS solutions'
             step['dependency'] = 2
-            step['id'] = '3GCF_DDKMA'+code
+            step['id'] = '3FeDDKMA'+code
             step['slurm_config'] = cfg.SLURM_HIGHMEM
             step['pbs_config'] = cfg.PBS_WSCLEAN
             syscall = CONTAINER_RUNNER+DDFACET_CONTAINER+' ' if USE_SINGULARITY else ''
@@ -234,7 +234,7 @@ def main():
             step['step'] = 4
             step['comment'] = 'Apply primary beam correction to '+targetname+' 2GC DDFacet image'
             step['dependency'] = 0
-            step['id'] = '3GCF_PBCO1'+code
+            step['id'] = '3FfPBCO1'+code
             syscall = CONTAINER_RUNNER+ASTROPY_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/pbcor_katbeam.py --band '+band[0]+' --freqaxis 4 '+ddf_img_prefix+'.app.restored.fits'
             step['syscall'] = syscall
@@ -245,7 +245,7 @@ def main():
             step['step'] = 5
             step['comment'] = 'Apply primary beam correction to '+targetname+' 3GC DDFacet image'
             step['dependency'] = 4
-            step['id'] = '3GCF_PBCO2'+code
+            step['id'] = '3FgPBCO2'+code
             syscall = CONTAINER_RUNNER+ASTROPY_CONTAINER+' ' if USE_SINGULARITY else ''
             syscall += 'python3 '+TOOLS+'/pbcor_katbeam.py --band '+band[0]+' --freqaxis 4 '+kms_img_prefix+'.app.restored.fits'
             step['syscall'] = syscall
