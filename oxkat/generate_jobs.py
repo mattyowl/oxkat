@@ -315,8 +315,8 @@ def job_handler(syscall,
             '#PBS -l walltime='+pbs_walltime+'\n',
             '#PBS -l nodes='+pbs_nodes+':ppn='+pbs_ppn+',mem='+pbs_mem+'\n',
             '#PBS -q '+pbs_queue+'\n'
+            '#PBS -j oe'+'\n'
             '#PBS -o '+pbs_logfile+'\n'
-            '#PBS -e '+pbs_errfile+'\n'
             '#PBS -m ae'+'\n'
             '#PBS -M '+pbs_email+'\n'
             'SECONDS=0\n'
