@@ -161,7 +161,7 @@ PBS_TRICOLOUR = {
 
 PBS_WSCLEAN = {
 	'PROGRAM': CHPC_ALLOCATION,
-	'WALLTIME': '12:00:00',
+	'WALLTIME': '24:00:00',
 	'QUEUE': 'serial',
 	'NODES': '1',
 	'PPN': '24',
@@ -208,7 +208,7 @@ PRE_TIMEBIN = '8s'                   # Integration time for working MS
 
 # Reference antennas
 CAL_1GC_REF_ANT = 'auto'             # Comma-separated list to manually specify refant(s)
-CAL_1GC_REF_POOL = ['m000','m001','m002','m003','m004','m006'] 
+CAL_1GC_REF_POOL = ['m000','m001','m002','m003','m004','m006']
                                      # Pool to re-order for reference antenna list for 'auto'
 
 # Field selection, IDs only at present. (Use tools/ms_info.py.)
@@ -230,17 +230,17 @@ CAL_1GC_FILLGAPS = 24                # Maximum channel gap over which to interpo
 
 # Band specific options
 
-if BAND == 'UHF':       
+if BAND == 'UHF':
 
     CAL_1GC_FREQRANGE = '*:850~900MHz'        # Clean part of the band to use for generating UHF 1GC G-solutions
     CAL_1GC_UVRANGE = '>150m'               # Selection for baselines to include during 1GC B/G solving (K excluded)
     CAL_1GC_0408_MODEL = ([27.907,0.0,0.0,0.0],[-1.205],'850MHz')
 
-    CAL_1GC_BAD_FREQS = ['*:540~570MHz',      # Lower band edge 
+    CAL_1GC_BAD_FREQS = ['*:540~570MHz',      # Lower band edge
                         '*:1010~1150MHz']     # Upper band edge
 
     CAL_1GC_BL_FLAG_UVRANGE = '<600'        # Baseline range for which BL_FREQS are flagged
-    CAL_1GC_BL_FREQS = []            
+    CAL_1GC_BL_FREQS = []
 
 elif BAND == 'L':
 
@@ -254,7 +254,7 @@ elif BAND == 'L':
 
     CAL_1GC_BL_FLAG_UVRANGE = '<600'
     CAL_1GC_BL_FREQS = ['*:900MHz~915MHz',    # GSM and aviation
-                        '*:925MHz~960MHz',                
+                        '*:925MHz~960MHz',
                         '*:1080MHz~1095MHz',
                         '*:1565MHz~1585MHz',  # GPS
                         '*:1217MHz~1237MHz',
@@ -274,8 +274,8 @@ elif BAND == 'S0':
 
     CAL_1GC_FREQRANGE = '*:2300~2400MHz'
     CAL_1GC_UVRANGE = '>150m'
-    CAL_1GC_0408_MODEL = ([9.193,0.0,0.0,0.0],[-1.144],'2187MHz')   
-    CAL_1GC_BAD_FREQS = ['*:1700~1800MHz',    # Lower band edge 
+    CAL_1GC_0408_MODEL = ([9.193,0.0,0.0,0.0],[-1.144],'2187MHz')
+    CAL_1GC_BAD_FREQS = ['*:1700~1800MHz',    # Lower band edge
                         '*:2500~2650MHz']     # Upper band edge
     CAL_1GC_BL_FLAG_UVRANGE = '<600'
     CAL_1GC_BL_FREQS = []
@@ -284,8 +284,8 @@ elif BAND == 'S1':
 
     CAL_1GC_FREQRANGE = ''
     CAL_1GC_UVRANGE = '>150m'
-    CAL_1GC_0408_MODEL = ([8.244,0.0,0.0,0.0],[-1.138],'2406MHz')   
-    CAL_1GC_BAD_FREQS = ['*:1967~2056MHz',    # Lower band edge 
+    CAL_1GC_0408_MODEL = ([8.244,0.0,0.0,0.0],[-1.138],'2406MHz')
+    CAL_1GC_BAD_FREQS = ['*:1967~2056MHz',    # Lower band edge
                         '*:2756~2845MHz']     # Upper band edge
     CAL_1GC_BL_FLAG_UVRANGE = '<600'
     CAL_1GC_BL_FREQS = []
@@ -294,8 +294,8 @@ elif BAND == 'S2':
 
     CAL_1GC_FREQRANGE = ''
     CAL_1GC_UVRANGE = '>150m'
-    CAL_1GC_0408_MODEL = ([7.468,0.0,0.0,0.0],[-1.133],'2625MHz')   
-    CAL_1GC_BAD_FREQS = ['*:2187~2275MHz',    # Lower band edge 
+    CAL_1GC_0408_MODEL = ([7.468,0.0,0.0,0.0],[-1.133],'2625MHz')
+    CAL_1GC_BAD_FREQS = ['*:2187~2275MHz',    # Lower band edge
                         '*:2975~3063MHz']     # Upper band edge
     CAL_1GC_BL_FLAG_UVRANGE = '<600'
     CAL_1GC_BL_FREQS = []
@@ -304,8 +304,8 @@ elif BAND == 'S3':
 
     CAL_1GC_FREQRANGE = ''
     CAL_1GC_UVRANGE = '>150m'
-    CAL_1GC_0408_MODEL = ([6.822,0.0,0.0,0.0],[-1.128],'2483MHz')   
-    CAL_1GC_BAD_FREQS = ['*:2405~2493MHz',    # Lower band edge 
+    CAL_1GC_0408_MODEL = ([6.822,0.0,0.0,0.0],[-1.128],'2483MHz')
+    CAL_1GC_BAD_FREQS = ['*:2405~2493MHz',    # Lower band edge
                         '*:3194~3282MHz']     # Upper band edge
     CAL_1GC_BL_FLAG_UVRANGE = '<600'
     CAL_1GC_BL_FREQS = []
@@ -313,9 +313,9 @@ elif BAND == 'S3':
 elif BAND == 'S4':
 
     CAL_1GC_FREQRANGE = '*:2900~3000MHz'
-    CAL_1GC_UVRANGE = '>150m'     
-    CAL_1GC_0408_MODEL = ([6.423,0.0,0.0,0.0],[-1.124],'3000MHz')   
-    CAL_1GC_BAD_FREQS = ['*:2600~2690MHz',    # Lower band edge 
+    CAL_1GC_UVRANGE = '>150m'
+    CAL_1GC_0408_MODEL = ([6.423,0.0,0.0,0.0],[-1.124],'3000MHz')
+    CAL_1GC_BAD_FREQS = ['*:2600~2690MHz',    # Lower band edge
                         '*:3420~3600MHz']     # Upper band edge
     CAL_1GC_BL_FLAG_UVRANGE = '<600'
     CAL_1GC_BL_FREQS = []
@@ -347,7 +347,7 @@ CAL_2GC_DELAYCAL_PARSET = DATA+'/cubical/2GC_delaycal.parset'
 CAL_3GC_PEEL_NCHAN = 32
 CAL_3GC_PEEL_BRIGGS = -0.6
 CAL_3GC_PEEL_DIR1COLNAME = 'DIR1_DATA'
-CAL_3GC_PEEL_REGION = ''  # Specify DS9 peeling region 
+CAL_3GC_PEEL_REGION = ''  # Specify DS9 peeling region
                           # Leave blank to search for <fieldname>*peel*.reg in the current path
 CAL_3GC_PEEL_PARSET = DATA+'/cubical/3GC_peel.parset'
 CAL_3GC_FACET_REGION = '' # Specify DS9 region to define tessel centres
@@ -439,7 +439,7 @@ if BAND == 'S1':
 if BAND == 'S2':
     WSC_CELLSIZE = '0.58asec'
 if BAND == 'S3':
-    WSC_CELLSIZE = '0.54asec'    
+    WSC_CELLSIZE = '0.54asec'
 if BAND == 'S4':
     WSC_CELLSIZE = '0.5asec'
 
@@ -516,7 +516,7 @@ DDF_DDMODEDEGRID = 'AP'
 DDF_GAIN = 0.15
 DDF_FLUXTHRESHOLD = 3e-6
 DDF_CYCLEFACTOR = 0
-DDF_RMSFACTOR = 3.0	
+DDF_RMSFACTOR = 3.0
 DDF_DECONVMODE = 'hogbom'
 DDF_SSD_DECONVPEAKFACTOR = 0.001
 DDF_SSD_MAXMAJORITER = 3
@@ -527,7 +527,7 @@ DDF_HOGBOM_MAXMAJORITER = 5
 DDF_HOGBOM_MAXMINORITER = 100000
 DDF_HOGBOM_POLYFITORDER = 4
 # [Mask]
-DDF_MASK = 'auto' # 'auto' enables automasking 
+DDF_MASK = 'auto' # 'auto' enables automasking
                   # 'fits' uses the first *.mask.fits in the current folder
                   # otherwise pass a filename to use a specific FITS image
 # [Misc]
